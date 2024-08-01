@@ -1,0 +1,21 @@
+# project target
+minishell
+
+# project_libs
+*.a
+*.so
+
+# project objects
+*.o
+build/
+
+# project tests
+test/
+./test*
+test_*/
+
+# editor files
+.vscode/
+.clangd
+.clang-format
+./playground

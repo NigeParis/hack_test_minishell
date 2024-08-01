@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:25:17 by bgoulard          #+#    #+#             */
-/*   Updated: 2024/08/01 15:08:12 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/08/01 15:39:09 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,6 @@ void	parent_exec(t_minishell_control *shell, t_cmd_to_exec *cmd, int pid,
 	// if (!(cmd->redir_to_do && has_pipe(cmd->redir_to_do)))
 	// 	waitpid(pid, &cmd->status, 0);
 	
-	// if (pipe[0] != -1)
-	// 	dup2(pipe[0], prev_pipe[1]);
-	
-	
-	///TODO need a condition that checks if the cmds with pipe is complete ex :  "cat |"  or "cat file |"	
-	// if (??????????????)
-	//close(pipe[0]);
-
-
 	close(pipe[1]);
 	if (WIFSIGNALED(cmd->status))
 	{
@@ -53,7 +44,7 @@ void	parent_exec(t_minishell_control *shell, t_cmd_to_exec *cmd, int pid,
 	}
 	else
 		shell->exit = WEXITSTATUS(cmd->status);
-	// buff_destroy_all();
-	// discard_cmd(cmd);
+	buff_destroy_all();
+	//discard_cmd(cmd);  /// TODO seg fault
 	signal_init();
 }

@@ -6,13 +6,13 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:27:43 by bgoulard          #+#    #+#             */
-/*   Updated: 2024/07/23 17:13:54 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:31:17 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_vector.h"
 #include "parser_types.h"
-
+#include <stdio.h>
 #include <fcntl.h>
 
 void	cr_file(int i, t_vector *prep)
@@ -23,6 +23,7 @@ void	cr_file(int i, t_vector *prep)
 
 	nd = ft_vec_at(prep, i);
 	redir = nd->value;
+
 	if ((redir->redir_type & RDIR_MSK_IO) == RDIR_INPUT)
 		return ;
 	if ((redir->redir_type & RDIR_MSK_IO) == RDIR_OUTPUT)
@@ -46,6 +47,7 @@ void	file_creation(t_vector *prep)
 	int					i;
 
 	i = 0;
+	
 	while (prep && (size_t)i < prep->count)
 	{
 		token = ft_vec_at(prep, i);

@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser_syntax.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bgoulard <bgoulard@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 02:45:32 by bgoulard          #+#    #+#             */
-/*   Updated: 2024/07/23 12:20:56 by bgoulard         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:21:46 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_string.h"
 #include "ft_vector.h"
 #include "parser_types.h"
+#include <stdio.h>
 
 void	print_syntax_error(t_syntax syntax)
 {

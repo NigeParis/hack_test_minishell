@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:22:15 by bgoulard          #+#    #+#             */
-/*   Updated: 2024/08/01 15:37:33 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:35:39 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,11 @@ int	minishell_execute(t_minishell_control *shell)
 	(set_pipe(pp_fd, -1, -1), set_pipe(p_fd, -1, -1));
 	cmd = parser_get_cmd(shell->preparsed, shell);
 	status = 0;
-	cmd->cmd_order = count;
 	if (cmd != NULL)
+	{
+		cmd->cmd_order = count;	
 		cmd->nbr_cmds = 1;
+	}
 	while (cmd && (status == 0 || status == 127))
 	{
 		set_pipe(p_fd, -1, -1);

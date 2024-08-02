@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:25:17 by bgoulard          #+#    #+#             */
-/*   Updated: 2024/08/01 15:39:09 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/07/24 09:50:45 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,15 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-#include "ft_string.h"
-
 void	parent_exec(t_minishell_control *shell, t_cmd_to_exec *cmd, int pid,
-		int *prev_pipe,  int *pipe)
+		int *prev_pipe)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	// if (prev_pipe[1] != -1 || prev_pipe[0] != -1)
-	// 	(close(prev_pipe[0]), close(prev_pipe[1]));
-	// if (!(cmd->redir_to_do && has_pipe(cmd->redir_to_do)))
-	// 	waitpid(pid, &cmd->status, 0);
-	
-	close(pipe[1]);
+	if (prev_pipe[1] != -1 || prev_pipe[0] != -1)
+		(close(prev_pipe[0]), close(prev_pipe[1]));
+	if (!(cmd->redir_to_do && has_pipe(cmd->redir_to_do)))
+		waitpid(pid, &cmd->status, 0);
 	if (WIFSIGNALED(cmd->status))
 	{
 		shell->exit = 128 + WTERMSIG(cmd->status);
@@ -45,6 +41,6 @@ void	parent_exec(t_minishell_control *shell, t_cmd_to_exec *cmd, int pid,
 	else
 		shell->exit = WEXITSTATUS(cmd->status);
 	buff_destroy_all();
-	//discard_cmd(cmd);  /// TODO seg fault
+	discard_cmd(cmd);
 	signal_init();
 }

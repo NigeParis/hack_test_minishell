@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 13:22:15 by bgoulard          #+#    #+#             */
-/*   Updated: 2024/08/01 16:35:39 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/08/02 15:51:15 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,24 @@ int	dispatcher(int pid, t_minishell_control *sh, t_cmd_to_exec *cmd,
 	if (pid == 0)
 		child_exec(sh, cmd, p_fd, (int *)pp_fd);
 	else
-		parent_exec(sh, cmd, pid, pp_fd, p_fd);
+		parent_exec(sh, cmd, pid, pp_fd);
 	return (EXIT_SUCCESS);
 }
 
 int	minishell_execute(t_minishell_control *shell)
 {
 	t_cmd_to_exec	*cmd;
-	static int count = 0;
 	int				status;
 	int				pp_fd[2];
 	int				p_fd[2];
-	pid_t			pid;
-
+    int				pid;
+	
 	(set_pipe(pp_fd, -1, -1), set_pipe(p_fd, -1, -1));
 	cmd = parser_get_cmd(shell->preparsed, shell);
 	status = 0;
+	pid = 0;
 	if (cmd != NULL)
-	{
-		cmd->cmd_order = count;	
 		cmd->nbr_cmds = 1;
-	}
 	while (cmd && (status == 0 || status == 127))
 	{
 		set_pipe(p_fd, -1, -1);
@@ -82,32 +79,20 @@ int	minishell_execute(t_minishell_control *shell)
 			call_bin(shell, cmd);
 		if ((ft_strcmp(cmd->argv[0], "exit") == 0) && (cmd->nbr_cmds == 0))
 			return (end_it_all(shell, cmd, status, pp_fd));
-		pid = fork();
-		
-		dispatcher(pid, shell, cmd, p_fd);
-		
-		//(set_pipe(pp_fd, p_fd[0], p_fd[1]), set_pipe(p_fd, -1, -1));
+		shell->pids[pid] = fork();
+		dispatcher(shell->pids[pid], shell, cmd, p_fd);
+		pid++;
+		(set_pipe(pp_fd, p_fd[0], p_fd[1]), set_pipe(p_fd, -1, -1));
 		status = shell->exit;
-		if (cmd)
-		{
-			cmd->cmd_order = count;
-			if (cmd && cmd->cmd_order == 0)
-			{
-				if ((ft_strcmp(cmd->argv[0], "cat") == 0))
-					close(p_fd[0]);
-				if ((ft_strcmp(cmd->argv[0], "tee") == 0))
-					close(p_fd[0]);
-			}
-		}
-		waitpid(pid, &cmd->status, 0);
-		set_pipe(pp_fd, p_fd[0], p_fd[1]);
-		set_pipe(p_fd, -1, -1);
 		cmd = parser_get_cmd(shell->preparsed, shell);
-		count++;
-
 	}
-	
-	count = 0;
-	
+
+	int i = 0;
+	while (i < pid) {
+		waitpid(shell->pids[i], &status, 0);
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
+		i++;
+	}
 	return (end_it_all(shell, cmd, status, pp_fd));
 }

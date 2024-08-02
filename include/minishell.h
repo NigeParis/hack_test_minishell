@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 11:15:12 by bgoulard          #+#    #+#             */
-/*   Updated: 2024/08/01 08:24:12 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:26:18 by bgoulard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	dd_cl(t_cmd_to_exec *cmd, t_minishell_control *shell, int code);
 void	child_exec(t_minishell_control *shell, t_cmd_to_exec *cmd,
 		int *p_fd, int *pp_fd);
 void	parent_exec(t_minishell_control *shell, t_cmd_to_exec *cmd, int pid,
-		int *prev_pipe, int *pipe);
+		int *prev_pipe);
 	
 int		resolve_dollarsign(char *line, t_minishell_control *sh, t_string *ret,
 			size_t *cr_offset);

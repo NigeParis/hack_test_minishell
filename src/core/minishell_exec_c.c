@@ -6,7 +6,7 @@
 /*   By: nrobinso <nrobinso@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 14:23:27 by bgoulard          #+#    #+#             */
-/*   Updated: 2024/08/01 09:12:20 by nrobinso         ###   ########.fr       */
+/*   Updated: 2024/07/24 11:07:48 by nrobinso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	child_exec(t_minishell_control *shell, t_cmd_to_exec *cmd,
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	close(p_fd[0]);
-	
 	if (cmd->redir_to_do && has_heredoc(cmd->redir_to_do))
 		do_hdoc_cmd(cmd, shell);
 	if (p_fd[STDOUT_FILENO] != -1)
